@@ -1,0 +1,53 @@
+doctrine:
+    dbal:
+        connections:
+            db1:
+                url: '%env(resolve:DATABASE_URL_DB1)%'
+            db2:
+                url: '%env(resolve:DATABASE_URL_DB2)%'
+        default_connection: db1
+    orm:
+        default_entity_manager: db1
+        entity_managers:
+            db1:
+                connection: db1
+                mappings:
+                    App1:
+                        is_bundle: false
+                        dir: '%kernel.project_dir%/src/Entity'
+                        prefix: 'App\Entity'
+                        alias: App1
+            db2:
+                connection: db2
+                mappings:
+                    App2:
+                        is_bundle: false
+                        dir: '%kernel.project_dir%/src/Entity'
+                        prefix: 'App\Entity'
+                        alias: App2
+
+when@test:
+    doctrine:
+        dbal:
+            # "TEST_TOKEN" is typically set by ParaTest
+            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+
+when@prod:
+    doctrine:
+        orm:
+            auto_generate_proxy_classes: false
+            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system

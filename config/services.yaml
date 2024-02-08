@@ -22,3 +22,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\EntityManagerSelectorService:
+        arguments:
+            $entityManagerDb1: '@doctrine.orm.db1_entity_manager'
+            $entityManagerDb2: '@doctrine.orm.db2_entity_manager'

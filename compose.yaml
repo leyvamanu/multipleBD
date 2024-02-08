@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  db1:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: db1
+    ports:
+      - "33061:3306"
+    volumes:
+      - db1_data:/var/lib/mysql
+
+  db2:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: db2
+    ports:
+      - "33062:3306"
+    volumes:
+      - db2_data:/var/lib/mysql
+
+volumes:
+  db1_data:
+  db2_data:
