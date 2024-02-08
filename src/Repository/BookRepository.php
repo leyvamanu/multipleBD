@@ -20,9 +20,4 @@ class BookRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Book::class);
     }
-
-    public function findAll(): array
-    {
-        return parent::findAll();
-    }
 }
