@@ -5,9 +5,6 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,21 +13,9 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/book')]
 class BookController extends AbstractController
 {
-    private $bookRepository;
-    private $entityManager;
-
-    public function __construct(
-        private readonly ManagerRegistry $doctrine,
-    )
-    {
-        $this->entityManager = $this->doctrine->getManager('db1');
-        $this->bookRepository = $this->entityManager->getRepository(Book::class);
-    }
-
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(BookRepository $bookRepository): Response
     {
-        $bookRepository = $doctrine->getManager('db2')->getRepository(Book::class);
         return $this->render('book/index.html.twig', [
             'books' => $bookRepository->findAll(),
         ]);
